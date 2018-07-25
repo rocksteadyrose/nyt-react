@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import SaveBtn from "../../components/SaveBtn";
 import Jumbotron from "../../components/Jumbotron";
-import API from "../../utils/API";
+import nytapi from "../../utils/nyt/nytapi";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
@@ -20,18 +20,36 @@ class SearchArticles extends Component {
   }
 
   loadArticles = () => {
-    API.getArticles()
+    nytapi.getArticles()
       .then(res =>
         this.setState({ articles: res.data, title: "", author: "", summary: "", date: "", startYear: "", endYear: "", articleDate: "", saved: "" })
       )
       .catch(err => console.log(err));
   };
 
+  findArticles = (event) => {
+    event.preventDefault();
+    nytapi.findArticles(this.state.searchTerm, this.state.startYear, this.state.endYear)
+  .then(res => {
+    this.setState({articles: res.data.response.docs});
+  })
+  .catch(err => console.log(err));
+  }
+
   deleteArticle = id => {
-    API.deleteArticle(id)
+    nytapi.deleteArticle(id)
       .then(res => this.loadArticles())
       .catch(err => console.log(err));
   };
+
+  saveArticle = (title, link, articleDate) => {
+    nytapi.saveArticle({
+      title: title,
+      link: link,
+      articleDate: articleDate
+    })
+  };
+
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -40,9 +58,10 @@ class SearchArticles extends Component {
     });
   };
 
+
   handleFormSubmit = event => {
     event.preventDefault();
-    API.getArticles(this.state.searchTerm)
+    nytapi.getArticles(this.state.searchTerm)
     .then(res => 
       this.setState({
         results: res.data
@@ -79,8 +98,8 @@ class SearchArticles extends Component {
                 placeholder="End Date (optional)"
               />
               <FormBtn
-                disabled={!(this.state.searchTerm)}
-                onClick={this.handleFormSubmit}
+                disabled={!(this.state.searchTerm && this.state.startYear && this.state.endYear)}
+                onClick={this.findArticles}
               >
                 Submit
               </FormBtn>
