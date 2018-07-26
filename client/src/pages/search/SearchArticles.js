@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import SaveButton from "../../components/SaveButton";
 import DeleteButton from "../../components/DeleteButton";
 import Jumbotron from "../../components/Jumbotron";
 import nytapi from "../../utils/nyt/nytapi";
@@ -10,29 +11,30 @@ import { Input, TextArea, FormBtn } from "../../components/Form";
 
 class SearchArticles extends Component {
   state = {
-    title: "",
+    search: "",
     startYear: "",
     endYear: "",
-    articles: []
+    articles: [],
+    savedArticles: [],
+    title: ""
   };
 
-  // componentDidMount() {
-  //   this.loadArticles();
-  // }
+  componentDidMount() {
+    this.loadSavedArticles();
+  }
 
-    // (this.state.searchTerm, this.state.startYear, this.state.endYear)
-  loadArticles = () => {
-    nytapi.getArticles()
+  loadSavedArticles = () => {
+    nytapi.getSaved()
     .then(res => {
-        this.setState({ articles: res.data, title: "", startYear: "", endYear: "" });
-        // console.log(res.data)
-      })
+        this.setState({ savedArticles: res.data}
+      );
+      })  
       .catch(err => console.log(err));
   }
 
   searchArticle = (event) => {
     event.preventDefault();
-    nytapi.getArticle(this.state.title, this.state.startYear, this.state.endYear)
+    nytapi.getArticles(this.state.search, this.state.startYear, this.state.endYear)
     .then(res => {
       console.log(res)
         this.setState({ articles: res.data.response.docs});
@@ -41,21 +43,22 @@ class SearchArticles extends Component {
       .catch(err => console.log(err));
   }
 
-  deleteArticle = id => {
-    nytapi.deleteArticle(id)
-      .then(res => this.loadArticles())
-      .catch(err => console.log(err));
-  };
-
-  // saveArticle = (title, link, articleDate) => {
-  //   nytapi.saveArticle({
-  //     title: title,
-  //     link: link,
-  //     articleDate: articleDate
-  //   })
-  //     .then(res => console.log("Saved the article"))
+  // deleteArticle = id => {
+  //   nytapi.deleteArticle(id)
+  //     .then(res => this.loadArticles())
   //     .catch(err => console.log(err));
   // };
+
+  saveArticleFunction = event => {
+    event.preventDefault();
+
+    //Find the article from the articles array with the ID matching the saved button
+    const articleSaveButton = (this.state.articles.filter(element => element._id === event.target.id)[0]);
+    nytapi.saveArticle({ title: articleSaveButton.headline.main})
+      .then(res => 
+        this.loadSavedArticles())
+      .catch(err => console.log(err));
+  };
 
 
   handleInputChange = event => {
@@ -68,18 +71,14 @@ class SearchArticles extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    nytapi.saveArticle({
-      title: this.state.title,
-        // link: this.state.link,
-        startYear: this.state.startYear,
-        endYear: this.state.endYear
-    })
+    nytapi.getArticles(this.state
+    )
       .then(res =>
-        this.loadArticles()
+        this.setState({
+          articles: res.data.response.docs})
         )
       .catch(err => console.log(err));
   }
-
 
   render() {
     return (
@@ -91,10 +90,10 @@ class SearchArticles extends Component {
             </Jumbotron>
             <form>
               <Input
-                value={this.state.title}
+                value={this.state.search}
                 onChange={this.handleInputChange}
-                name="title"
-                placeholder="Title (required)"
+                name="search"
+                placeholder="Search Term (required)"
               />
               <Input
                 value={this.state.startYear}
@@ -109,7 +108,7 @@ class SearchArticles extends Component {
                 placeholder="End Date (optional)"
               />
               <FormBtn
-                disabled={!(this.state.title && this.state.startYear && this.state.endYear)}
+                disabled={!(this.state.search && this.state.startYear && this.state.endYear)}
                 onClick={this.searchArticle}
               >
                 Submit
@@ -119,7 +118,7 @@ class SearchArticles extends Component {
 
           <Col size="md-6 sm-12">
             <Jumbotron>
-              <h1>Saved Articles</h1>
+              <h1>Results</h1>
             </Jumbotron>
             {this.state.articles.length ? (
               <List>
@@ -127,10 +126,10 @@ class SearchArticles extends Component {
                   <ListItem key={article._id}>
                   <Link to={"/articles/" + article._id}>
                   <strong>
-                {article.title} on{article.startYear}
+                {article.headline.main}
                 </strong>
                 </Link>
-                    <DeleteButton onClick={() => this.deleteButton(article._id)} />
+                    <SaveButton id={article._id} onClick={this.saveArticleFunction} />
                   </ListItem>
                 ))}
                 </List>
@@ -139,6 +138,30 @@ class SearchArticles extends Component {
                 )}
           </Col>
         </Row>
+
+        <Row>
+        <Col size="md-6 sm-12">
+            <Jumbotron>
+              <h1>Saved Articles</h1>
+            </Jumbotron>
+            {this.state.savedArticles.length ? (
+              <List>
+                {this.state.savedArticles.map(article => (
+                  <ListItem key={article._id}>
+                  <Link to={"/articles/" + article._id}>
+                  <strong>
+                {article.headline.main}
+                </strong>
+                </Link>
+                    <DeleteButton id={article._id} onClick={this.deleteArticleFunction} />
+                  </ListItem>
+                ))}
+                </List>
+                ) : (
+                <h3>No Results to Display</h3>
+                )}
+          </Col>
+          </Row>
       </Container>
           );
         }

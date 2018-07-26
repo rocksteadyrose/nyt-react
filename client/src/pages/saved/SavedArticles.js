@@ -4,20 +4,27 @@ import { Col, Row, Container } from "../../components/Grid";
 import Jumbotron from "../../components/Jumbotron";
 import nytapi from "../../utils/nyt/nytapi";
 
+
 class SavedArticles extends Component {
   state = {
     article: {}
   };
   // When this component mounts, grab the article with the _id of this.props.match.params.id
   // e.g. localhost:3000/articles/599dcb67f0f16317844583fc
-  componentDidMount() {
+  loadSavedArticle = () => {
     nytapi.getArticle(this.props.match.params.id)
-    .then(res => this.setState({ article: res.data }))
-    .catch(err => console.log(err));
+      .then(res =>
+        this.setState({
+          article: res.data
+        }
+        ))
+      .catch(err => console.log(err));
+
+
   }
 
 
- 
+
   render() {
     return (
       <Container fluid>
@@ -25,7 +32,7 @@ class SavedArticles extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1>
-              {this.state.article.title} on{this.state.article.startYear}
+                {this.state.article.title}
               </h1>
             </Jumbotron>
           </Col>
@@ -35,7 +42,7 @@ class SavedArticles extends Component {
             <article>
               <h1>About</h1>
               <p>
-                {/* {this.state.articles.data} */}
+                {this.state.article.title}
               </p>
             </article>
           </Col>
