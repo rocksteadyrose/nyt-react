@@ -6,8 +6,7 @@ const Schema = mongoose.Schema;
 const ArticleSchema = new Schema({
   title: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   author: {
     type: String,
@@ -25,24 +24,25 @@ const ArticleSchema = new Schema({
     type: String,
     required: true
   },
-  date: { 
-    type: Date, 
+  date: {
+    type: Date,
     default: Date.now
   },
-
-  saved: {
-    type: Boolean,
-    default: false
-  },
-
-  // `note` is an object that stores a Note id
-  // The ref property links the ObjectId to the Note model
-  // This allows us to populate the Article with an associated Note
-  note: [{
-    type: Schema.Types.ObjectId,
-    ref: "Note"
- }]
-});
+  // notes: { 
+  //   type: String,
+  //   required: true
+  //   [
+  //     {
+  //       note: String,
+  //       date: Date.now()
+  //     }
+  //   ]
+  //  }
+  note: {
+    type: String,
+    required: false
+  }
+})
 
 // This creates our model from the above schema, using mongoose's model method
 const Article = mongoose.model("Article", ArticleSchema);

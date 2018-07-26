@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import SaveButton from "../../components/SaveButton";
 import DeleteButton from "../../components/DeleteButton";
+import Notes from "../../components/Notes";
+// import NotesModal from "../../components/NotesModal";
 import Jumbotron from "../../components/Jumbotron";
 import nytapi from "../../utils/nyt/nytapi";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import { Input, FormBtn } from "../../components/Form";
 
 
 class SearchArticles extends Component {
@@ -16,7 +18,9 @@ class SearchArticles extends Component {
     endYear: "",
     articles: [],
     savedArticles: [],
-    title: ""
+    title: "",
+    savedNotes: [],
+    note: ""
   };
 
   componentDidMount() {
@@ -57,7 +61,18 @@ class SearchArticles extends Component {
 
     //Find the article from the articles array with the ID matching the saved button
     const articleSaveButtonContent = (this.state.articles.filter(element => element._id === event.target.id)[0]);
-    nytapi.saveArticle({ title: articleSaveButtonContent.headline.main, author: articleSaveButtonContent.source, summary: articleSaveButtonContent.snippet, articleDate: articleSaveButtonContent.pub_date, link: articleSaveButtonContent.web_url })
+    nytapi.saveArticle({ title: articleSaveButtonContent.headline.main, author: articleSaveButtonContent.source, summary: articleSaveButtonContent.snippet, articleDate: articleSaveButtonContent.pub_date, link: articleSaveButtonContent.web_url, note: "none" })
+      .then(res =>
+        this.loadSavedArticles())
+      .catch(err => console.log(err));
+  };
+
+  addNoteFunction = event => {
+    event.preventDefault();
+    const newNoteId = (this.state.savedArticles.filter(element => element._id === event.target.id)[0]);
+    console.log(newNoteId)
+
+    nytapi.saveNote({})
       .then(res =>
         this.loadSavedArticles())
       .catch(err => console.log(err));
@@ -105,7 +120,7 @@ class SearchArticles extends Component {
                 name="startYear"
                 placeholder="Start Date (optional)"
               />
-              <TextArea
+              <Input
                 value={this.state.endYear}
                 onChange={this.handleInputChange}
                 name="endYear"
@@ -152,15 +167,30 @@ class SearchArticles extends Component {
               <List>
                 {this.state.savedArticles.map(article => (
                   <ListItem key={article._id}>
-                    <Link to={"/articles/" + article._id}>
-                      <strong>
-                        {article.title}
-                        {article.author}
+                    <strong>
+                      {article.title}
+                      {article.author}
+                    </strong>
+                    <form>
+                      <Input
+                        value={this.state.note}
+                        onChange={this.handleInputChange}
+                        name="notes"
+                        placeholder="Notes"
+                      />
+                      <DeleteButton id={article._id} onClick={this.deleteArticleFunction} />
+                      {/* <Notes id={article._id} onClick={this.addNoteFunction} data-toggle="modal" data-target="#NotesModal" /> */}
+                    <FormBtn
+                      disabled={!(this.state.note)}
+                      onClick={this.addNoteFunction}
+                    >
+                    
+                      Submit
+                  </FormBtn>
+                  </form>
 
-                      </strong>
-                    </Link>
-                    <DeleteButton id={article._id} onClick={this.deleteArticleFunction} />
                   </ListItem>
+
                 ))}
               </List>
             ) : (
