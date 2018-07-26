@@ -17,11 +17,7 @@ const ArticleSchema = new Schema({
     type: String,
     required: true
   },
-  startYear: {
-    type: String,
-    required: true
-  },
-  endYear: {
+  articleDate: {
     type: String,
     required: true
   },

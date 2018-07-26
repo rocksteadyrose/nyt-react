@@ -26,8 +26,8 @@ class SearchArticles extends Component {
   loadSavedArticles = () => {
     nytapi.getSaved()
     .then(res => {
-        this.setState({ savedArticles: res.data}
-      );
+        this.setState({ savedArticles: res.data})
+        console.log(res.data)
       })  
       .catch(err => console.log(err));
   }
@@ -54,7 +54,7 @@ class SearchArticles extends Component {
 
     //Find the article from the articles array with the ID matching the saved button
     const articleSaveButton = (this.state.articles.filter(element => element._id === event.target.id)[0]);
-    nytapi.saveArticle({ title: articleSaveButton.headline.main})
+    nytapi.saveArticle({ title: articleSaveButton.headline.main, author: articleSaveButton.source, summary: articleSaveButton.snippet, articleDate: articleSaveButton.pub_date, link: articleSaveButton.web_url})
       .then(res => 
         this.loadSavedArticles())
       .catch(err => console.log(err));
@@ -150,7 +150,9 @@ class SearchArticles extends Component {
                   <ListItem key={article._id}>
                   <Link to={"/articles/" + article._id}>
                   <strong>
-                {article.headline.main}
+                {article.title}
+                {article.author}
+
                 </strong>
                 </Link>
                     <DeleteButton id={article._id} onClick={this.deleteArticleFunction} />
