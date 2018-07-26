@@ -25,37 +25,40 @@ class SearchArticles extends Component {
 
   loadSavedArticles = () => {
     nytapi.getSaved()
-    .then(res => {
-        this.setState({ savedArticles: res.data})
+      .then(res => {
+        this.setState({ savedArticles: res.data })
         console.log(res.data)
-      })  
+      })
       .catch(err => console.log(err));
   }
 
   searchArticle = (event) => {
     event.preventDefault();
     nytapi.getArticles(this.state.search, this.state.startYear, this.state.endYear)
-    .then(res => {
-      console.log(res)
-        this.setState({ articles: res.data.response.docs});
+      .then(res => {
+        console.log(res)
+        this.setState({ articles: res.data.response.docs });
         // console.log(res.data)
       })
       .catch(err => console.log(err));
   }
 
-  // deleteArticle = id => {
-  //   nytapi.deleteArticle(id)
-  //     .then(res => this.loadArticles())
-  //     .catch(err => console.log(err));
-  // };
+  deleteArticleFunction = (event) => {
+    event.preventDefault();
+    //Find the article from the articles array with the ID matching the saved button
+    const deleteArticleButton = this.state.savedArticles.filter(element => element._id = event.target.id)[0];
+    nytapi.deleteArticle(deleteArticleButton)
+      .then(res => this.loadSavedArticles())
+      .catch(err => console.log(err));
+  };
 
   saveArticleFunction = event => {
     event.preventDefault();
 
     //Find the article from the articles array with the ID matching the saved button
-    const articleSaveButton = (this.state.articles.filter(element => element._id === event.target.id)[0]);
-    nytapi.saveArticle({ title: articleSaveButton.headline.main, author: articleSaveButton.source, summary: articleSaveButton.snippet, articleDate: articleSaveButton.pub_date, link: articleSaveButton.web_url})
-      .then(res => 
+    const articleSaveButtonContent = (this.state.articles.filter(element => element._id === event.target.id)[0]);
+    nytapi.saveArticle({ title: articleSaveButtonContent.headline.main, author: articleSaveButtonContent.source, summary: articleSaveButtonContent.snippet, articleDate: articleSaveButtonContent.pub_date, link: articleSaveButtonContent.web_url })
+      .then(res =>
         this.loadSavedArticles())
       .catch(err => console.log(err));
   };
@@ -75,8 +78,9 @@ class SearchArticles extends Component {
     )
       .then(res =>
         this.setState({
-          articles: res.data.response.docs})
-        )
+          articles: res.data.response.docs
+        })
+      )
       .catch(err => console.log(err));
   }
 
@@ -124,23 +128,23 @@ class SearchArticles extends Component {
               <List>
                 {this.state.articles.map(article => (
                   <ListItem key={article._id}>
-                  <Link to={"/articles/" + article._id}>
-                  <strong>
-                {article.headline.main}
-                </strong>
-                </Link>
+                    <Link to={"/articles/" + article._id}>
+                      <strong>
+                        {article.headline.main}
+                      </strong>
+                    </Link>
                     <SaveButton id={article._id} onClick={this.saveArticleFunction} />
                   </ListItem>
                 ))}
-                </List>
-                ) : (
+              </List>
+            ) : (
                 <h3>No Results to Display</h3>
-                )}
+              )}
           </Col>
         </Row>
 
         <Row>
-        <Col size="md-6 sm-12">
+          <Col size="md-6 sm-12">
             <Jumbotron>
               <h1>Saved Articles</h1>
             </Jumbotron>
@@ -148,25 +152,25 @@ class SearchArticles extends Component {
               <List>
                 {this.state.savedArticles.map(article => (
                   <ListItem key={article._id}>
-                  <Link to={"/articles/" + article._id}>
-                  <strong>
-                {article.title}
-                {article.author}
+                    <Link to={"/articles/" + article._id}>
+                      <strong>
+                        {article.title}
+                        {article.author}
 
-                </strong>
-                </Link>
+                      </strong>
+                    </Link>
                     <DeleteButton id={article._id} onClick={this.deleteArticleFunction} />
                   </ListItem>
                 ))}
-                </List>
-                ) : (
+              </List>
+            ) : (
                 <h3>No Results to Display</h3>
-                )}
+              )}
           </Col>
-          </Row>
+        </Row>
       </Container>
-          );
-        }
-      }
-      
-      export default SearchArticles;
+    );
+  }
+}
+
+export default SearchArticles;
