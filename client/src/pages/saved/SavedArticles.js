@@ -6,19 +6,18 @@ import nytapi from "../../utils/nyt/nytapi";
 
 class SavedArticles extends Component {
   state = {
-    searchTerm: "",
-    startYear: "",
-    endYear: "",
-    results: []
+    article: {}
   };
-  // When this component mounts, grab the book with the _id of this.props.match.params.id
-  // e.g. localhost:3000/books/599dcb67f0f16317844583fc
+  // When this component mounts, grab the article with the _id of this.props.match.params.id
+  // e.g. localhost:3000/articles/599dcb67f0f16317844583fc
   componentDidMount() {
-    nytapi.getArticles(this.props.match.params.id)
-      .then(res => this.setState({ book: res.data }))
-      .catch(err => console.log(err));
+    nytapi.getArticle(this.props.match.params.id)
+    .then(res => this.setState({ article: res.data }))
+    .catch(err => console.log(err));
   }
 
+
+ 
   render() {
     return (
       <Container fluid>
@@ -26,7 +25,7 @@ class SavedArticles extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1>
-                {this.state.results}
+              {this.state.article.title} on{this.state.article.startYear}
               </h1>
             </Jumbotron>
           </Col>
@@ -34,9 +33,9 @@ class SavedArticles extends Component {
         <Row>
           <Col size="md-10 md-offset-1">
             <article>
-              <h1>Synopsis</h1>
+              <h1>About</h1>
               <p>
-                {this.state.book.synopsis}
+                {/* {this.state.articles.data} */}
               </p>
             </article>
           </Col>
