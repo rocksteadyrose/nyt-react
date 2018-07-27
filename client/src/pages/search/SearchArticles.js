@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import SaveButton from "../../components/SaveButton";
 import DeleteButton from "../../components/DeleteButton";
-import Notes from "../../components/Notes";
-// import NotesModal from "../../components/NotesModal";
 import Jumbotron from "../../components/Jumbotron";
 import nytapi from "../../utils/nyt/nytapi";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, FormBtn } from "../../components/Form";
+// import Note from "../Note";
 
 
 class SearchArticles extends Component {
@@ -23,18 +22,7 @@ class SearchArticles extends Component {
     note: ""
   };
 
-  componentDidMount() {
-    this.loadSavedArticles();
-  }
-
-  loadSavedArticles = () => {
-    nytapi.getSaved()
-      .then(res => {
-        this.setState({ savedArticles: res.data })
-        console.log(res.data)
-      })
-      .catch(err => console.log(err));
-  }
+  
 
   searchArticle = (event) => {
     event.preventDefault();
@@ -51,7 +39,7 @@ class SearchArticles extends Component {
     event.preventDefault();
     //Find the article from the articles array with the ID matching the saved button
     const deleteArticleButton = this.state.savedArticles.filter(element => element._id = event.target.id)[0];
-    nytapi.deleteArticle(deleteArticleButton)
+    nytapi.deleteSavedArticle(deleteArticleButton)
       .then(res => this.loadSavedArticles())
       .catch(err => console.log(err));
   };
@@ -67,16 +55,29 @@ class SearchArticles extends Component {
       .catch(err => console.log(err));
   };
 
-  addNoteFunction = event => {
-    event.preventDefault();
-    const newNoteId = (this.state.savedArticles.filter(element => element._id === event.target.id)[0]);
-    console.log(newNoteId)
+  // addNoteFunction = event => {
+  //   event.preventDefault();
 
-    nytapi.saveNote({})
-      .then(res =>
-        this.loadSavedArticles())
-      .catch(err => console.log(err));
-  };
+  //         console.log(this.state.note
+  //         )
+
+  //   nytapi.saveNote({note: this.state.note
+  //   })
+  //     .then(res => 
+  //      this.loadSavedNotes()
+  //     )
+  //     .catch(err => console.log(err));
+  // };
+
+  // loadSavedNotes = (event) => {
+  //   event.preventDefault();
+  //   nytapi.getSavedNotes()
+  //   .then(res => {
+  //     this.setState({ savedNotes: res.data })
+  //     console.log(res.data)
+  //   })
+  //   .catch(err => console.log(err));
+  // }
 
 
   handleInputChange = event => {
@@ -103,7 +104,7 @@ class SearchArticles extends Component {
     return (
       <Container fluid>
         <Row>
-          <Col size="md-6">
+          <Col size="md-12">
             <Jumbotron>
               <h1>New York Times Article Scrubber</h1>
             </Jumbotron>
@@ -135,7 +136,7 @@ class SearchArticles extends Component {
             </form>
           </Col>
 
-          <Col size="md-6 sm-12">
+          <Col size="md-12 sm-12">
             <Jumbotron>
               <h1>Results</h1>
             </Jumbotron>
@@ -143,11 +144,9 @@ class SearchArticles extends Component {
               <List>
                 {this.state.articles.map(article => (
                   <ListItem key={article._id}>
-                    <Link to={"/articles/" + article._id}>
                       <strong>
-                        {article.headline.main}
-                      </strong>
-                    </Link>
+                        {article.headline.main} by {article.source}
+                        </strong> <a href={article.web_url} target="blank"> Link</a>
                     <SaveButton id={article._id} onClick={this.saveArticleFunction} />
                   </ListItem>
                 ))}
@@ -158,49 +157,10 @@ class SearchArticles extends Component {
           </Col>
         </Row>
 
-        <Row>
-          <Col size="md-6 sm-12">
-            <Jumbotron>
-              <h1>Saved Articles</h1>
-            </Jumbotron>
-            {this.state.savedArticles.length ? (
-              <List>
-                {this.state.savedArticles.map(article => (
-                  <ListItem key={article._id}>
-                    <strong>
-                      {article.title}
-                      {article.author}
-                    </strong>
-                    <form>
-                      <Input
-                        value={this.state.note}
-                        onChange={this.handleInputChange}
-                        name="notes"
-                        placeholder="Notes"
-                      />
-                      <DeleteButton id={article._id} onClick={this.deleteArticleFunction} />
-                      {/* <Notes id={article._id} onClick={this.addNoteFunction} data-toggle="modal" data-target="#NotesModal" /> */}
-                    <FormBtn
-                      disabled={!(this.state.note)}
-                      onClick={this.addNoteFunction}
-                    >
-                    
-                      Submit
-                  </FormBtn>
-                  </form>
-
-                  </ListItem>
-
-                ))}
-              </List>
-            ) : (
-                <h3>No Results to Display</h3>
-              )}
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+            </Container>
+ );
 }
+}
+
 
 export default SearchArticles;

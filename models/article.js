@@ -28,20 +28,9 @@ const ArticleSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  // notes: { 
-  //   type: String,
-  //   required: true
-  //   [
-  //     {
-  //       note: String,
-  //       date: Date.now()
-  //     }
-  //   ]
-  //  }
-  note: {
-    type: String,
-    required: false
-  }
+  // note: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: "Note"}
 })
 
 // This creates our model from the above schema, using mongoose's model method
