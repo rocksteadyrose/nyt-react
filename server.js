@@ -16,11 +16,15 @@ if (process.env.NODE_ENV === "production") {
 // Add routes, both API and view
 app.use(routes);
 
-// Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/nytreact");
-// Connect to the Mongo DB
-mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI);
+
+mongoose.Promise = global.Promise;
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost/mongo_scraper",
+  {
+    useMongoClient: true
+  }
+)
 
 // Start the API server
 app.listen(PORT, function() {
