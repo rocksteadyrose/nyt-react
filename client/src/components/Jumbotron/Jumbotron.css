@@ -1,0 +1,40 @@
+@font-face {
+    font-family: "Newspaper";
+    src: url("../../fonts/newspaperfont.ttf");
+    font-weight: normal;
+  }
+
+
+.jumbotron {
+    background: url("../../images/newspaperbackground.jpg");
+    border: rgb(0, 255, 234) solid 10px;
+}
+
+h1 {
+    font-family: "Newspaper", Arial, Helvetica, sans-serif;
+    font-size: 80px;
+    margin-top: -30px;
+}
+
+@media screen and (max-width: 701px) { 
+  
+    h1 {
+        font-size: 70px;
+    }
+}
+
+@media screen and (max-width: 520px) { 
+  
+    h1 {
+        font-size: 50px;
+    }
+}
+
+@media screen and (max-width: 400px) { 
+  
+    h1 {
+        font-size: 50px;
+        margin-top: -50px;
+    }
+}
+

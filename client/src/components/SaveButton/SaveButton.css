@@ -1,4 +1,8 @@
-.savebutton {
+.save-button {
   float: right;
-  color: #e74944;
+  background-color:#dc6f68;
+}
+
+.save-button:hover {
+  background-color: rgb(0, 255, 234);
 }

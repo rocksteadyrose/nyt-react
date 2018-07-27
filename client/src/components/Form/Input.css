@@ -1,0 +1,22 @@
+.form-control:valid {
+    background-color: #000000;
+}
+*::-webkit-input-placeholder {
+    color: #dc6f68!important;
+}
+*:-moz-placeholder {
+    /* FF 4-18 */
+    color: dc6f68!important;
+}
+*::-moz-placeholder {
+    /* FF 19+ */
+    color: dc6f68!important;
+}
+*:-ms-input-placeholder {
+    /* IE 10+ */
+    color: dc6f68!important;
+}
+
+.form-control {
+    color: #dc6f68!important;
+}

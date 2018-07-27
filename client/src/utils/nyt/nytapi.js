@@ -1,6 +1,6 @@
 import axios from "axios";
 import key from "./key";
-console.log(key)
+// console.log(key)
 
 export default {
   // Gets saved articles
@@ -14,15 +14,6 @@ export default {
   // Saves an article to the database
   saveArticle: function(articleData) {
     return axios.post("/api/articles/", articleData);
-  },
-
-  // Saves a note to the database
-  saveNote: function(noteData) {
-    return axios.post("/api/notes/", noteData);
-  },
-
-  getSavedNotes: function() {
-    return axios.get("/api/notes");
   },
 
   getArticles: function(title, startYear, endYear) {

@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import SaveButton from "../../components/SaveButton";
-import DeleteButton from "../../components/DeleteButton";
 import Jumbotron from "../../components/Jumbotron";
 import nytapi from "../../utils/nyt/nytapi";
-import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, FormBtn } from "../../components/Form";
-// import Note from "../Note";
 
 
 class SearchArticles extends Component {
@@ -18,21 +15,22 @@ class SearchArticles extends Component {
     articles: [],
     savedArticles: [],
     title: "",
-    notes: ""
   };
 
   
 
   searchArticle = (event) => {
     event.preventDefault();
+    
     nytapi.getArticles(this.state.search, this.state.startYear, this.state.endYear)
       .then(res => {
-        console.log(res)
+        console.log(res.data.response.docs)
         this.setState({ articles: res.data.response.docs });
-        // console.log(res.data)
       })
-      .catch(err => console.log(err));
-  }
+      .then(res =>
+        alert("📰 Articles found! 📰"))
+      .catch(err => console.log(err));  
+    }
 
   deleteArticleFunction = (event) => {
     event.preventDefault();
@@ -48,36 +46,12 @@ class SearchArticles extends Component {
 
     //Find the article from the articles array with the ID matching the saved button
     const articleSaveButtonContent = (this.state.articles.filter(element => element._id === event.target.id)[0]);
-    nytapi.saveArticle({ title: articleSaveButtonContent.headline.main, author: articleSaveButtonContent.source, summary: articleSaveButtonContent.snippet, articleDate: articleSaveButtonContent.pub_date, link: articleSaveButtonContent.web_url, note: "none" })
+    nytapi.saveArticle({ title: articleSaveButtonContent.headline.main, author: articleSaveButtonContent.source, summary: articleSaveButtonContent.snippet, articleDate: articleSaveButtonContent.pub_date, link: articleSaveButtonContent.web_url
+  })
       .then(res =>
-        alert("Article saved!"))
+        alert("📰 Article saved! 📰"))
       .catch(err => console.log(err));
   };
-
-  // addNoteFunction = event => {
-  //   event.preventDefault();
-
-  //         console.log(this.state.note
-  //         )
-
-  //   nytapi.saveNote({note: this.state.note
-  //   })
-  //     .then(res => 
-  //      this.loadSavedNotes()
-  //     )
-  //     .catch(err => console.log(err));
-  // };
-
-  // loadSavedNotes = (event) => {
-  //   event.preventDefault();
-  //   nytapi.getSavedNotes()
-  //   .then(res => {
-  //     this.setState({ savedNotes: res.data })
-  //     console.log(res.data)
-  //   })
-  //   .catch(err => console.log(err));
-  // }
-
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -112,25 +86,25 @@ class SearchArticles extends Component {
                 value={this.state.search}
                 onChange={this.handleInputChange}
                 name="search"
-                placeholder="Search Term (required)"
+                placeholder="Search Term"
               />
               <Input
                 value={this.state.startYear}
                 onChange={this.handleInputChange}
                 name="startYear"
-                placeholder="Start Date (optional)"
+                placeholder="Start Date"
               />
               <Input
                 value={this.state.endYear}
                 onChange={this.handleInputChange}
                 name="endYear"
-                placeholder="End Date (optional)"
+                placeholder="End Date"
               />
               <FormBtn
                 disabled={!(this.state.search && this.state.startYear && this.state.endYear)}
                 onClick={this.searchArticle}
               >
-                Submit
+                SUBMIT
               </FormBtn>
             </form>
           </Col>
@@ -149,7 +123,7 @@ class SearchArticles extends Component {
                         <h5>Date published: {article.pub_date}</h5>
                         <h6>{article.snippet}</h6>
 
-                         <a href={article.web_url} target="blank"> Link</a>
+                         <a href={article.web_url} target="blank"> <span role="img" aria-label="newspaper1">📰</span> Read more here <span role="img" aria-label="newspaper2">📰</span></a>
                     <SaveButton id={article._id} onClick={this.saveArticleFunction} />
                   </ListItem>
                 ))}
