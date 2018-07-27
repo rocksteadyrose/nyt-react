@@ -11,8 +11,5 @@ router.route("/:id")
   .get(articlesController.findById)
   .delete(articlesController.remove);
 
-// router.route("/saved")
-//   .post(articlesController.create)
-//   .get(articlesController.findAll)
 
 module.exports = router;

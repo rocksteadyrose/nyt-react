@@ -18,7 +18,7 @@ const ArticleSchema = new Schema({
   },
   articleDate: {
     type: String,
-    required: true
+    required: false
   },
   link: {
     type: String,
@@ -28,9 +28,10 @@ const ArticleSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  // note: {
+  // notes: [{
   //   type: Schema.Types.ObjectId,
-  //   ref: "Note"}
+  //   ref: "Note"
+  // }]
 })
 
 // This creates our model from the above schema, using mongoose's model method

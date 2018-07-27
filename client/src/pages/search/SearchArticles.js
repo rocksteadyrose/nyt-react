@@ -18,8 +18,7 @@ class SearchArticles extends Component {
     articles: [],
     savedArticles: [],
     title: "",
-    savedNotes: [],
-    note: ""
+    notes: ""
   };
 
   
@@ -51,7 +50,7 @@ class SearchArticles extends Component {
     const articleSaveButtonContent = (this.state.articles.filter(element => element._id === event.target.id)[0]);
     nytapi.saveArticle({ title: articleSaveButtonContent.headline.main, author: articleSaveButtonContent.source, summary: articleSaveButtonContent.snippet, articleDate: articleSaveButtonContent.pub_date, link: articleSaveButtonContent.web_url, note: "none" })
       .then(res =>
-        this.loadSavedArticles())
+        alert("Article saved!"))
       .catch(err => console.log(err));
   };
 
@@ -145,8 +144,12 @@ class SearchArticles extends Component {
                 {this.state.articles.map(article => (
                   <ListItem key={article._id}>
                       <strong>
-                        {article.headline.main} by {article.source}
-                        </strong> <a href={article.web_url} target="blank"> Link</a>
+                        <h2>{article.headline.main}</h2>
+                        </strong>
+                        <h5>Date published: {article.pub_date}</h5>
+                        <h6>{article.snippet}</h6>
+
+                         <a href={article.web_url} target="blank"> Link</a>
                     <SaveButton id={article._id} onClick={this.saveArticleFunction} />
                   </ListItem>
                 ))}

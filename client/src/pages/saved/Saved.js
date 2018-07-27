@@ -64,31 +64,6 @@ class Saved extends Component {
       .catch(err => console.log(err));
   };
 
-  // addNoteFunction = event => {
-  //   event.preventDefault();
-
-  //         console.log(this.state.note
-  //         )
-
-  //   nytapi.saveNote({note: this.state.note
-  //   })
-  //     .then(res => 
-  //      this.loadSavedNotes()
-  //     )
-  //     .catch(err => console.log(err));
-  // };
-
-  // loadSavedNotes = (event) => {
-  //   event.preventDefault();
-  //   nytapi.getSavedNotes()
-  //   .then(res => {
-  //     this.setState({ savedNotes: res.data })
-  //     console.log(res.data)
-  //   })
-  //   .catch(err => console.log(err));
-  // }
-
-
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -128,22 +103,25 @@ class Saved extends Component {
             </Jumbotron>
             {this.state.savedArticles.length ? (
               <List>
-                {this.state.savedArticles.map(note => (
-                  <ListItem key={note._id}>
-                    <strong>
-                      {note.title}
-                      {note.author}
-                    </strong>
+                {this.state.savedArticles.map(article => (
+                  <ListItem key={article._id}>
+                     <strong>
+                        <h2>{article.title}</h2>
+                        </strong>
+                        <h5>Date published: {article.articleDate}</h5>
+                        <h6>{article.summary}</h6>
+
+                         <a href={article.link} target="blank"> Link</a>
                     <form>
                       <Input
-                        key={note._id}
-                        id={note._id}
+                        key={article._id}
+                        id={article._id}
                         value={this.state.note}
                         onChange={this.handleInputChange}
                         name="note"
                         placeholder="Notes"
                       />
-                      <DeleteButton id={note._id} onClick={this.deleteArticleFunction} />
+                      <DeleteButton id={article._id} onClick={this.deleteArticleFunction} />
                       {/* <Notes id={article._id} onClick={this.addNoteFunction} data-toggle="modal" data-target="#NotesModal" /> */}
                       <FormBtn
                         // id={note._id}
