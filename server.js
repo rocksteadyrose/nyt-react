@@ -20,7 +20,7 @@ app.use(routes);
 mongoose.Promise = global.Promise;
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/mongo_scraper",
+  process.env.MONGODB_URI || "mongodb://localhost/nytreact",
   {
     useMongoClient: true
   }
