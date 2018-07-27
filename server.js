@@ -16,15 +16,23 @@ if (process.env.NODE_ENV === "production") {
 // Add routes, both API and view
 app.use(routes);
 
+// Set mongoose to leverage built in JavaScript ES6 Promises
+mongoose.Promise = Promise;
 
-mongoose.Promise = global.Promise;
-// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/nytreact",
-  {
-    useMongoClient: true
-  }
-)
+if (process.env.MONGODB_URI) {
+	mongoose.connect(process.env.MONGODB_URI);	
+} else {
+	mongoose.connect('mongodb://localhost/nytreact');
+}
+var db = mongoose.connection;
+
+db.on('error', function (error) {
+	console.log('Mongoose Error: ', error);
+});
+
+db.once('open', function () {
+	console.log('Mongoose connection successful.');
+});
 
 // Start the API server
 app.listen(PORT, function() {
