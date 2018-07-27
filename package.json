@@ -1,7 +1,7 @@
 {
-  "name": "mern",
+  "name": "nytscraper",
   "version": "1.0.0",
-  "description": "",
+  "description": "mern react nyt scraper",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
@@ -13,7 +13,7 @@
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run build"
   },
-  "author": "",
+  "author": "leslie rose",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^3.5.0",
@@ -27,5 +27,13 @@
     "if-env": "^1.0.4",
     "mongoose": "^5.2.5",
     "react-router-dom": "^4.3.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rocksteadyrose/nyt-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rocksteadyrose/nyt-react/issues"
+  },
+  "homepage": "https://github.com/rocksteadyrose/nyt-react#readme"
 }
