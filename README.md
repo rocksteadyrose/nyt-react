@@ -2,7 +2,9 @@
 
 View the completed app on Heroku <a href="http://bit.ly/rosenytscrubber">here</a>
 
-For this app, the goal was to break the UI into various components, manage component state, and respond to user events using React.
+<img width="909" alt="screen shot 2018-07-28 at 4 41 03 pm" src="https://user-images.githubusercontent.com/34491285/43360869-f221e93c-9285-11e8-9e1a-11dbe63b3886.png">
+<img width="911" alt="screen shot 2018-07-28 at 4 40 51 pm" src="https://user-images.githubusercontent.com/34491285/43360871-f62f64b4-9285-11e8-98ef-5bf08d335b68.png">
+<img width="913" alt="screen shot 2018-07-28 at 4 38 57 pm" src="https://user-images.githubusercontent.com/34491285/43360872-fa7b0ec4-9285-11e8-892d-c4d369256627.png">
 
 **INSTRUCTIONS:**
 
