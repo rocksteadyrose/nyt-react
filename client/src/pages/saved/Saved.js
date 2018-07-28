@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Moment from "react-moment";
 import DeleteButton from "../../components/DeleteButton";
 import Jumbotron from "../../components/Jumbotron";
 import nytapi from "../../utils/nyt/nytapi";
@@ -93,8 +94,8 @@ class Saved extends Component {
                      <strong>
                         <h2>{article.title}</h2>
                         </strong>
-                        <h5>Date published: {article.articleDate}</h5>
-                        <h5>Date saved: {article.date}</h5>
+                        <h5>Date published: <Moment date = {article.articleDate}/></h5>
+                        <h5>Date saved: <Moment date = {article.date}/></h5>
                         <h6>{article.summary}</h6>
 
                          <a href={article.link} target="blank"> <span role="img" aria-label="newspaper1">📰</span> Read More Here <span role="img" aria-label="newspaper2">📰</span></a>

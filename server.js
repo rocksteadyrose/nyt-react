@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const routes = require("./routes");
-const dotenv = require('dotenv').config()
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -22,7 +21,7 @@ mongoose.Promise = Promise;
 if (process.env.MONGODB_URI) {
 	mongoose.connect(process.env.MONGODB_URI);	
 } else {
-	mongoose.connect('mongodb://localhost/nytreact');
+	mongoose.connect('mongodb://localhost/nytreact') ;
 }
 var db = mongoose.connection;
 

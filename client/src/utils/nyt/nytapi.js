@@ -1,6 +1,8 @@
 import axios from "axios";
-import key from "./key";
+// import key from "./key";
 // console.log(key)
+
+const apiKey = "28c76f86032641b48a5361ea39cb62fa";
 
 export default {
   // Gets saved articles
@@ -17,6 +19,6 @@ export default {
   },
 
   getArticles: function(title, startYear, endYear) {
-    return axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + "28c76f86032641b48a5361ea39cb62fa" + "&q=" + title + "&begin_date=" + startYear + "0101&end_date=" + endYear + "1231");
+    return axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + apiKey + "&q=" + title + "&be gin_date=" + startYear + "0101&end_date=" + endYear + "1231");
   }
 };
