@@ -7,6 +7,7 @@ import { List, ListItem } from "../../components/List";
 import { Input, FormBtn } from "../../components/Form";
 
 class SearchArticles extends Component {
+  //Putting default values in case nothing is entered for the year
   state = {
     search: "",
     startYear: "",
@@ -85,7 +86,7 @@ class SearchArticles extends Component {
               <h1>New York Times Article Scrubber</h1>
             </Jumbotron>
             <form>
-              <Input
+            <Input
                 value={this.state.search}
                 onChange={this.handleInputChange}
                 name="search"
@@ -126,7 +127,7 @@ class SearchArticles extends Component {
                     <h5>Date published: {article.pub_date}</h5>
                     <h6>{article.snippet}</h6>
 
-                    <a href={article.web_url} target="blank"> <span role="img" aria-label="newspaper1">📰</span> Read more here <span role="img" aria-label="newspaper2">📰</span></a>
+                    <a href={article.web_url} target="blank"><span role="img" aria-label="newspaper1">📰</span> Read more here <span role="img" aria-label="newspaper2">📰</span></a>
                     <SaveButton id={article._id} onClick={this.saveArticleFunction} />
                   </ListItem>
                 ))}
