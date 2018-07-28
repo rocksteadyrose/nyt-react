@@ -8,11 +8,11 @@ View the completed app on Heroku <a href="http://bit.ly/rosenytscrubber">here</a
 
 **INSTRUCTIONS:**
 
-* Use the form fields to enter your search topic, plus the start and end dates for your search
+* Use the form fields to enter your search topic, plus the range of years (start and end years) for your search
 
-* The app will make an API call to the New York Times database and pull up to 10 results for the search term. The results include the article title, a snippet, the publishing date, and a link to read the article.
+* The app will query the New York Times API and up to 10 results will be displayed on the page. The results include the article title, a snippet from the article, the publishing date, and a link to read the article.
 
-* By pressing the SAVE button, the article is saved to the Mongo database. All saved articles can be accessed using the SAVED ARTICLES in the nav bar.
+* By pressing the SAVE button, the article is saved to the Mongo database. All saved articles can be accessed using the SAVED ARTICLES in the nav bar. The saved articles include the saved date, and can be deleted.
   
 **Technologies Used:**
 * React
