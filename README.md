@@ -12,7 +12,7 @@ View the completed app on Heroku <a href="http://bit.ly/rosenytscrubber">here</a
 
 * The app will query the New York Times API and up to 10 results will be displayed on the page. The results include the article title, a snippet from the article, the publishing date, and a link to read the article.
 
-* By pressing the SAVE button, the article is saved to the Mongo database. All saved articles can be accessed using the SAVED ARTICLES in the nav bar. The saved articles include the saved date, and can be deleted.
+* By pressing the SAVE button, the article is saved to the Mongo database. All saved articles can be accessed using the SAVED ARTICLES link in the nav bar. The saved articles display the saved date and can be deleted.
   
 **Technologies Used:**
 * React
