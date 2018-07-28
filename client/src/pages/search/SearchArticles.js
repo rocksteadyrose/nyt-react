@@ -6,7 +6,6 @@ import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, FormBtn } from "../../components/Form";
 
-
 class SearchArticles extends Component {
   state = {
     search: "",
@@ -17,20 +16,23 @@ class SearchArticles extends Component {
     title: "",
   };
 
-  
-
   searchArticle = (event) => {
     event.preventDefault();
-    
+
     nytapi.getArticles(this.state.search, this.state.startYear, this.state.endYear)
       .then(res => {
         console.log(res.data.response.docs)
         this.setState({ articles: res.data.response.docs });
       })
-      .then(res =>
-        alert("📰 Articles found! 📰"))
-      .catch(err => console.log(err));  
-    }
+      .then(res => {
+        if (this.state.articles.length > 0) {
+          alert("📰 Articles found! 📰")
+        } else {
+          alert("😢 No articles found! Try another search! 😢")
+        }
+      })
+      .catch(err => console.log(err));
+  }
 
   deleteArticleFunction = (event) => {
     event.preventDefault();
@@ -46,8 +48,9 @@ class SearchArticles extends Component {
 
     //Find the article from the articles array with the ID matching the saved button
     const articleSaveButtonContent = (this.state.articles.filter(element => element._id === event.target.id)[0]);
-    nytapi.saveArticle({ title: articleSaveButtonContent.headline.main, author: articleSaveButtonContent.source, summary: articleSaveButtonContent.snippet, articleDate: articleSaveButtonContent.pub_date, link: articleSaveButtonContent.web_url
-  })
+    nytapi.saveArticle({
+      title: articleSaveButtonContent.headline.main, author: articleSaveButtonContent.source, summary: articleSaveButtonContent.snippet, articleDate: articleSaveButtonContent.pub_date, link: articleSaveButtonContent.web_url
+    })
       .then(res =>
         alert("📰 Article saved! 📰"))
       .catch(err => console.log(err));
@@ -117,26 +120,27 @@ class SearchArticles extends Component {
               <List>
                 {this.state.articles.map(article => (
                   <ListItem key={article._id}>
-                      <strong>
-                        <h2>{article.headline.main}</h2>
-                        </strong>
-                        <h5>Date published: {article.pub_date}</h5>
-                        <h6>{article.snippet}</h6>
+                    <strong>
+                      <h2>{article.headline.main}</h2>
+                    </strong>
+                    <h5>Date published: {article.pub_date}</h5>
+                    <h6>{article.snippet}</h6>
 
-                         <a href={article.web_url} target="blank"> <span role="img" aria-label="newspaper1">📰</span> Read more here <span role="img" aria-label="newspaper2">📰</span></a>
+                    <a href={article.web_url} target="blank"> <span role="img" aria-label="newspaper1">📰</span> Read more here <span role="img" aria-label="newspaper2">📰</span></a>
                     <SaveButton id={article._id} onClick={this.saveArticleFunction} />
                   </ListItem>
                 ))}
               </List>
-            ) : (
+            ) :
+              (
                 <h3>No Results to Display</h3>
               )}
           </Col>
         </Row>
 
-            </Container>
- );
-}
+      </Container>
+    );
+  }
 }
 
 
