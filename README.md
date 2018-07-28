@@ -1,5 +1,7 @@
 # New York Times Article Scrubber
 
+The React New York Times Article Scruber uses the React mounting lifecycle to query & display articles based on user searches. Users can also save them to read later using Mongo.
+
 View the completed app on Heroku <a href="http://bit.ly/rosenytscrubber">here</a>
 
 <img width="909" alt="screen shot 2018-07-28 at 4 41 03 pm" src="https://user-images.githubusercontent.com/34491285/43360869-f221e93c-9285-11e8-9e1a-11dbe63b3886.png">
